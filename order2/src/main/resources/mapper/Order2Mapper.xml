@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.order2.mapper.Order2Mapper">
+    <!--추가-->
+    <insert id="insert">
+        INSERT INTO TBL_ORDER2 (ORDER2_ID, DESSERT_NUMBER, DESSERT_COUNT, ORDER2_PRICE)
+        VALUES (#{order2Id}, #{dessertNumber}, #{dessertCount}, #{order2Price})
+    </insert>
+
+    <!--삭제-->
+    <delete id="delete">
+        DELETE FROM TBL_ORDER2
+        WHERE ORDER2_ID = #{order2Id}
+    </delete>
+
+    <!--조회-->
+    <select id="select" resultType="order2DTO">
+        SELECT ORDER2_ID, ORDER2_DATE, D.DESSERT_NUMBER, DESSERT_COUNT, ORDER2_PRICE, DESSERT_NAME, DESSERT_PRICE, DESSERT_STOCK
+        FROM TBL_DESSERT I JOIN TBL_ORDER2 O
+        ON D.DESSERT_NUMBER = #{dessertNumber} AND D.DESSERT_NUMBER = O.DESSERT_NUMBER
+    </select>
+
+    <select id="selectOrder" resultType="order2DTO">
+        SELECT ORDER2_ID, ORDER2_DATE, D.DESSERT_NUMBER, DESSERT_COUNT, ORDER2_PRICE, DESSERT_NAME
+        FROM TBL_DESSERT D JOIN TBL_ORDER2 O
+        ON ORDER2_ID = #{order2Id} AND D.DESSERT_NUMBER = O.DESSERT_NUMBER
+    </select>
+
+    <!--전체 조회-->
+    <select id="selectAll" resultType="order2DTO">
+        SELECT ORDER2_ID, ORDER2_DATE, D.DESSERT_NUMBER, DESSERT_COUNT, ORDER2_PRICE, DESSERT_NAME, DESSERT_PRICE, DESSERT_STOCK
+        FROM TBL_DESSERT I JOIN TBL_ORDER2 O ON D.DESSERT_NUMBER = O.DESSERT_NUMBER
+    </select>
+
+    <!--주문 번호 조회-->
+    <select id="selectOrderId" resultType="string">
+        SELECT TO_CHAR(CURRENT_DATE, 'yyyymmdd') || ORDER2_SEQ ORDER2_NUMBER FROM
+        (
+            SELECT ORDER2_SEQ, ORDER2_DATE FROM TBL_ORDER2_SEQ ORDER BY ROWNUM DESC
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+    <!--주문 번호 증가-->
+    <update id="next">
+        UPDATE TBL_ORDER2_SEQ
+        SET ORDER2_SEQ = ORDER2_SEQ + 1
+        WHERE TO_CHAR(ORDER2_DATE, 'yyyymmdd') = TO_CHAR(CURRENT_DATE, 'yyyymmdd')
+    </update>
+
+    <!--주문 번호 추가-->
+    <insert id="insertOrderSequence">
+        INSERT INTO TBL_ORDER2_SEQ (ORDER2_DATE)
+        VALUES (CURRENT_DATE)
+    </insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

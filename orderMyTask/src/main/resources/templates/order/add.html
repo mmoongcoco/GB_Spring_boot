@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3></h3>
+<table style="border: 1px solid">
+    <thead>
+    <tr class="tHead">
+        <th class="itemNumber">No.</th>
+        <th class="itemName">상품명</th>
+        <th class="itemPrice">상품 가격</th>
+        <th class="itemStock">상품 수량</th>
+        <th class="itemCheck">체크</th>
+        <th class="itemOrder">주문</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="item:${items}">
+        <tr class="tBody" th:Object="${item}">
+            <td class="bno" th:text="*{itemNumber}"></td>
+            <td class="name" th:text="*{itemName}"></td>
+            <td class="price" th:text="*{itemPrice}"></td>
+            <td class="stock" th:text="*{itemStock}"></td>
+            <td class="check"><input type="checkbox"></td>
+            <td class="orderBtn"><input type="button">주문하기</td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</body>
+</html>
